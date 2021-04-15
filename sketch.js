@@ -6,7 +6,6 @@ var fitness = [];
 var record = Infinity;
 var mejor;
 var mejorActual;
-var flag = 0;
 
 function setup() {
   createCanvas(600, 600);
@@ -21,7 +20,6 @@ function setup() {
   for (let i = 0; i < tamañoPoblacion; i++) {
     poblacion.push(shuffle(orden));
   }
-  console.log(poblacion);
 }
 
 function draw() {
@@ -31,14 +29,14 @@ function draw() {
   calcFitness();
   normalizarFitness();
   siguienteGeneracion();
-
+  //Dibujar numeros de cada ciudad
   stroke(255,0,0);
   strokeWeight(1);
   noFill();
   beginShape();
   textSize(32);
   for (let i = 0; i < ciudades.length; i++) {
-    text(i.toString(),ciudades[i].x, ciudades[i].y < 32 ? ciudades[i].y + 10: ciudades[i].y -10)
+    text(i.toString(),ciudades[i].x, ciudades[i].y < 32 ? ciudades[i].y + 42: ciudades[i].y -10)
   }
   //Dibujar la mejor opcion
   stroke(255);

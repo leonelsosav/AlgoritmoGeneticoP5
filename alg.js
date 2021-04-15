@@ -1,4 +1,3 @@
-
 function calcFitness() {
     var recordActual = Infinity;
     for (let i = 0; i < poblacion.length; i++) {
@@ -7,7 +6,7 @@ function calcFitness() {
         if (d < record) {
             record = d;
             mejor = poblacion[i];
-            document.getElementById("mejorOrden").innerHTML = `Mejor orden: ${mejor.join(",")}`;
+            document.getElementById("mejorOrden").innerHTML = `Mejor orden: ${mejor.join(", ")}`;
         }
         if (d < recordActual) {
             recordActual = d;
@@ -35,11 +34,6 @@ function siguienteGeneracion() {
         var orden = crossOver(ordenA, ordenB); 
         mutar(orden, 0.01);//mutacion aleatoria
         poblacionNueva[i] = orden;
-    }
-    if (flag < 1) {
-        flag++;
-        console.log(poblacion);
-        console.log(poblacionNueva);
     }
     poblacion = poblacionNueva;//actualizar la poblacion
 }
