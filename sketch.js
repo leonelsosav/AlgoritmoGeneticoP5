@@ -24,6 +24,7 @@ function setup() {
   }
 }
 
+//Crear nuevo punto(ciudad) en donde se haya dado click
 function mouseClicked() {
   if (mouseX < 350 && mouseY < 350) {
     ciudades.push(createVector(mouseX, mouseY));
@@ -34,7 +35,7 @@ function mouseClicked() {
       poblacion.push(shuffle(orden));
     }
   }
-  // prevent default
+  // anula el click listener
   return false;
 }
 
@@ -51,20 +52,19 @@ function draw() {
   fill(255, 0, 0);
   beginShape();
   textSize(32);
-  for (let i = 0; i < ciudades.length; i++) {
-    text(String.fromCharCode(i+65), ciudades[i].x, ciudades[i].y < 32 ? ciudades[i].y + 42 : ciudades[i].y - 10)
-  }
+  ciudades.forEach((val, idx) => {
+    text(String.fromCharCode(idx + 65), val.x, val.y < 32 ? val.y + 42 : val.y-10);
+  });
+  endShape();
   //Dibujar la mejor opcion
   stroke(1);
   strokeWeight(4);
   noFill();
   beginShape();
-  for (var i = 0; i < mejor.length; i++) {
-    var n = mejor[i];
-    strokeWeight(4);
-    vertex(ciudades[n].x, ciudades[n].y);
-    ellipse(ciudades[n].x, ciudades[n].y, 16, 16);
-  }
+  mejor.forEach(val=>{
+    vertex(ciudades[val].x, ciudades[val].y);
+    ellipse(ciudades[val].x, ciudades[val].y, 16, 16);
+  });
   endShape();
 
   //Dibujar la opcion actual
@@ -73,11 +73,10 @@ function draw() {
   strokeWeight(1);
   noFill();
   beginShape();
-  for (var i = 0; i < mejorActual.length; i++) {
-    var n = mejorActual[i];
-    vertex(ciudades[n].x, ciudades[n].y);
-    ellipse(ciudades[n].x, ciudades[n].y, 8, 8);
-  }
+  mejorActual.forEach(val=>{
+    vertex(ciudades[val].x, ciudades[val].y);
+    ellipse(ciudades[val].x, ciudades[val].y, 8, 8);
+  });
   endShape();
 }
 

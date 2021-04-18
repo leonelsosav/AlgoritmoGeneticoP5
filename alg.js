@@ -18,25 +18,18 @@ function calcFitness() {
 }
 //Poner todos los valores entre 0 y 1
 function normalizarFitness() {
-    var sum = 0;
-    for (let i = 0; i < fitness.length; i++) {
-        sum += fitness[i];
-    }
-    for (let i = 0; i < fitness.length; i++) {
-        fitness[i] = fitness[i] / sum;
-    }
+    var sum = fitness.reduce((acc, curr) => acc + curr);
+    fitness = fitness.map(val => val = val / sum);
 }
 //Generar nueva poblacion
 function siguienteGeneracion() {
-    var poblacionNueva = [];
-    for (let i = 0; i < poblacion.length; i++) {
+    poblacion = poblacion.map(val => {//actualizar la poblacion
         var ordenA = escogerUno(poblacion, fitness); 
-        var ordenB = escogerUno(poblacion, fitness); //obtener una muestra de la poblacion
-        var orden = crossOver(ordenA, ordenB); 
-        mutar(orden, 0.01);//mutacion aleatoria
-        poblacionNueva[i] = orden;
-    }
-    poblacion = poblacionNueva;//actualizar la poblacion
+        var ordenB = escogerUno(poblacion, fitness); //obtener 2 muestras de la poblacion
+        var orden = crossOver(ordenA, ordenB); //crossover entre las 2 muestras 
+        mutar(orden, 0.01); //mutacion aleatoria
+        return orden;
+    });
 }
 //escoger un valor dentro de la poblacion que es donde la suma del fitness es menor a 0
 function escogerUno(list, probs) {
@@ -55,12 +48,7 @@ function crossOver(ordenA, ordenB){
     var inicio = floor(random(ordenA.length-1));
     var fin = floor(random(inicio+1, ordenA.length))
     var nuevoOrden = ordenA.slice(inicio, fin);
-
-    for (let i = 0; i < ordenB.length; i++) {
-        if(!nuevoOrden.includes(ordenB[i])){
-            nuevoOrden.push(ordenB[i]);
-        }
-    }
+    ordenB.forEach(val=>!nuevoOrden.includes(val) && nuevoOrden.push(val));
     return nuevoOrden;
 }
 
