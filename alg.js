@@ -6,7 +6,8 @@ function calcFitness() {
         if (d < record) {
             record = d;
             mejor = poblacion[i];
-            document.getElementById("mejorOrden").innerHTML = `Mejor orden: ${mejor.join(", ")}`;
+            document.getElementById("mejorOrden").innerHTML 
+            = `Mejor orden: ${mejor.map(val=>val=String.fromCharCode(val+65)).join(", ")}`;
         }
         if (d < recordActual) {
             recordActual = d;

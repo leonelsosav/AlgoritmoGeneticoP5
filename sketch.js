@@ -1,14 +1,16 @@
 var ciudades = [];
-var totalCiudades = 10;
-var tamañoPoblacion = 5;
+var totalCiudades = 0;
+var tamañoPoblacion = 10;
 var poblacion = [];
 var fitness = [];
 var record = Infinity;
 var mejor;
 var mejorActual;
+let bg;
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(350, 700);
+  bg = loadImage('mapa.png');
   var orden = [];
   //Se genera las posiciones de las diferentes "ciudades de manera aleatoria" 
   for (let i = 0; i < totalCiudades; i++) {
@@ -22,24 +24,38 @@ function setup() {
   }
 }
 
+function mouseClicked() {
+  if (mouseX < 350 && mouseY < 350) {
+    ciudades.push(createVector(mouseX, mouseY));
+    record = Infinity;
+    let orden = ciudades.map((val, idx) => val = idx);
+    poblacion = [];
+    for (let i = 0; i < tamañoPoblacion; i++) {
+      poblacion.push(shuffle(orden));
+    }
+  }
+  // prevent default
+  return false;
+}
+
 function draw() {
-  background(0);
+  background(bg);
 
   //Algoritmo Genetico
   calcFitness();
   normalizarFitness();
   siguienteGeneracion();
   //Dibujar numeros de cada ciudad
-  stroke(255,0,0);
+  stroke(255, 0, 0);
   strokeWeight(1);
-  noFill();
+  fill(255, 0, 0);
   beginShape();
   textSize(32);
   for (let i = 0; i < ciudades.length; i++) {
-    text(i.toString(),ciudades[i].x, ciudades[i].y < 32 ? ciudades[i].y + 42: ciudades[i].y -10)
+    text(String.fromCharCode(i+65), ciudades[i].x, ciudades[i].y < 32 ? ciudades[i].y + 42 : ciudades[i].y - 10)
   }
   //Dibujar la mejor opcion
-  stroke(255);
+  stroke(1);
   strokeWeight(4);
   noFill();
   beginShape();
@@ -66,19 +82,19 @@ function draw() {
 }
 
 //Intercambiar dos valores dentro de un arreglo
-function intercambiar(arr, a, b){
+function intercambiar(arr, a, b) {
   var temp = arr[a];
   arr[a] = arr[b];
   arr[b] = temp;
 }
 
 //Calcular la distancia entre las ciudades segun un orden (el de la poblacion)
-function calcDistancia(puntos, orden){
+function calcDistancia(puntos, orden) {
   var sum = 0;
-  for (let i = 0; i < orden.length-1; i++) {
+  for (let i = 0; i < orden.length - 1; i++) {
     var cityAIdx = orden[i];
     var cityA = puntos[cityAIdx];
-    var cityBIdx = orden[i+1];
+    var cityBIdx = orden[i + 1];
     var cityB = puntos[cityBIdx];
     var d = dist(cityA.x, cityA.y, cityB.x, cityB.y);
     sum += d;
