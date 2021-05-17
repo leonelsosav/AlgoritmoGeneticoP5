@@ -7,6 +7,9 @@ var record = Infinity;
 var mejor;
 var mejorActual;
 let bg;
+var hayQueParar = false;
+var numPoblacionesIteradas = 0;
+var limiteIteraciones = 300;
 
 function setup() {
   createCanvas(350, 700);
@@ -31,8 +34,10 @@ function mouseClicked() {
     record = Infinity;
     let orden = ciudades.map((val, idx) => val = idx);
     poblacion = [];
+    hayQueParar = false;
+    numPoblacionesIteradas = 0;
     for (let i = 0; i < tamañoPoblacion; i++) {
-      poblacion.push(shuffle(orden));
+      poblacion.push(shuffle(orden));//cada poblacion se representa en un arreglo, donde cada valor del arreglo representa el punto del mapa
     }
   }
   // anula el click listener
@@ -43,9 +48,12 @@ function draw() {
   background(bg);
 
   //Algoritmo Genetico
-  calcFitness();
-  normalizarFitness();
-  siguienteGeneracion();
+  if (!hayQueParar) {
+    calcFitness();
+    normalizarFitness();
+    siguienteGeneracion();
+    numPoblacionesIteradas++;
+  }
   //Dibujar numeros de cada ciudad
   stroke(255, 0, 0);
   strokeWeight(1);
@@ -53,7 +61,7 @@ function draw() {
   beginShape();
   textSize(32);
   ciudades.forEach((val, idx) => {
-    text(String.fromCharCode(idx + 65), val.x, val.y < 32 ? val.y + 42 : val.y-10);
+    text(String.fromCharCode(idx + 65), val.x, val.y < 32 ? val.y + 42 : val.y - 10);
   });
   endShape();
   //Dibujar la mejor opcion
@@ -61,7 +69,7 @@ function draw() {
   strokeWeight(4);
   noFill();
   beginShape();
-  mejor.forEach(val=>{
+  mejor.forEach(val => {
     vertex(ciudades[val].x, ciudades[val].y);
     ellipse(ciudades[val].x, ciudades[val].y, 16, 16);
   });
@@ -73,7 +81,7 @@ function draw() {
   strokeWeight(1);
   noFill();
   beginShape();
-  mejorActual.forEach(val=>{
+  mejorActual.forEach(val => {
     vertex(ciudades[val].x, ciudades[val].y);
     ellipse(ciudades[val].x, ciudades[val].y, 8, 8);
   });
